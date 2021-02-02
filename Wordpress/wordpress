@@ -1,0 +1,30 @@
+server {
+	listen 80;
+	#bisa diganti dengan ip address localhostmu atau ip servermu, nanti kalau sudah ada domain diganti nama domainmu
+	server_name 52.221.204.109;
+	#root adalah tempat dmn codingannya di masukkan index.html dll.
+	root /var/www/wordpress;
+	
+	# Add index.php to the list if you are using PHP
+	index index.php index.html index.htm ;
+
+    location ~ \.php$ {
+	    include snippets/fastcgi-php.conf;
+	    fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+	}
+
+	location ~ /\.ht {
+	    deny all;
+	}
+	location = /favicon.ico { log_not_found off; access_log off; }
+    location = /robots.txt { log_not_found off; access_log off; allow all; }
+    location ~* \.(css|gif|ico|jpeg|jpg|js|png)$ {
+        expires max;
+        log_not_found off;
+    }
+    location / {
+        #try_files $uri $uri/ =404;
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+	
+}
